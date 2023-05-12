@@ -28,6 +28,16 @@ export default function Signup() {
           />
         </label>
         <label>
+          <span>Username</span>
+          <input
+            type="text"
+            name="username"
+            placeholder="Your username"
+            defaultValue="nono"
+            required
+          />
+        </label>
+        <label>
           <span>Password</span>
           <input
             placeholder="password"

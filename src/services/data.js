@@ -1,17 +1,14 @@
 import axios from "axios";
+import { createParams } from "../utils/url";
 
 const API_URL = "http://localhost:3000";
 
 // Fetch multiple comics
-export async function getComics(title, skip, limit) {
+export async function getComics(params) {
   try {
-    const searchParams = new URLSearchParams({
-      title: title || "",
-      skip: skip >= 0 ? skip : "0",
-      limit: limit > 0 && limit <= 100 ? limit : "100",
-    });
+    const searchParams = createParams(params);
     const url = `${API_URL}/comics?${searchParams}`;
-    console.log(url);
+    console.log("Fetching:", url);
     const results = await axios.get(url);
     console.log("Fetched comics");
     return results.data;
@@ -46,14 +43,11 @@ export async function getComicsWith(characterId) {
 }
 
 // Fetch multiple characters
-export async function getCharacters(name, skip, limit) {
+export async function getCharacters(params) {
   try {
-    const searchParams = new URLSearchParams({
-      name: name || "",
-      skip: skip >= 0 ? skip : "0",
-      limit: limit > 0 && limit <= 100 ? limit : "100",
-    });
+    const searchParams = createParams(params);
     const url = `${API_URL}/characters?${searchParams}`;
+    console.log("Fetching", url);
     const results = await axios.get(url);
     console.log("Fetched characters");
     return results.data;

@@ -8,18 +8,44 @@ import {
   Form,
 } from "react-router-dom";
 
+import Page from "../components/page";
+
 import { getCharacters } from "../services/data";
+import { getFavoriteCharacters } from "../services/favorite";
+import Favorite from "../components/favorite";
+import { updateFavoriteCharacters } from "../services/favorite";
 
 export async function loader({ request }) {
+  // Read current searchParams
   const url = new URL(request.url);
-  const name = url.searchParams.get("name");
-  const characters = await getCharacters(name);
-  console.log(characters);
-  return { characters, name };
+  const skip = Number(url.searchParams.get("skip")) || 0;
+  const limit = Number(url.searchParams.get("limit")) || 100;
+  const name = url.searchParams.get("name") || "";
+
+  // Fetch data
+  const characters = await getCharacters({ skip, limit, name });
+
+  // This is moving to backend
+  // Get favorites
+  // const favoriteCharacters = getFavoriteCharacters();
+  // Merge
+  // characters.results.forEach((character) => {
+  //   character.favorite = favoriteCharacters.has(character._id);
+  // });
+
+  return { characters, skip, limit, name };
+}
+
+export async function action({ request }) {
+  let formData = await request.formData();
+  console.log(formData.get("itemId"));
+  return updateFavoriteCharacters(formData.get("itemId"), {
+    favorite: formData.get("favorite") === "true",
+  });
 }
 
 export default function Characters() {
-  const { characters, name } = useLoaderData();
+  const { characters, skip, limit, name } = useLoaderData();
   const navigation = useNavigation();
   const submit = useSubmit();
 
@@ -62,10 +88,19 @@ export default function Characters() {
         className={navigation.state === "loading" ? "loading" : ""}
       >
         <p>{characters.count} results</p>
+        <Page
+          route="/characters"
+          count={characters.count}
+          params={{ skip, limit, name }}
+        />
         {characters.results.map((character) => {
           return (
             <div key={character._id}>
-              <Link to={`/comics/${character._id}`}>{character.name}</Link>
+              <Link to={`/character/${character._id}`}>{character.name}</Link>
+              <Favorite item={character} />
+              <Link to={`/comics/${character._id}`}>
+                Comics she/he appears in
+              </Link>
             </div>
           );
         })}

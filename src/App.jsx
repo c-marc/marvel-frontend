@@ -5,14 +5,26 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./routes/root";
 import ErrorPage from "./error-page";
 import Index from "./routes";
-import Comics, { loader as comicsLoader } from "./routes/comics";
+import Comics, {
+  loader as comicsLoader,
+  action as comicsAction,
+} from "./routes/comics";
 import Comic, {
   loader as comicLoader,
   action as comicAction,
 } from "./routes/comic";
-import ComicsWith, { loader as comicsWithLoader } from "./routes/comicsWith";
-import Characters, { loader as charactersLoader } from "./routes/characters";
-import Character, { loader as characterLoader } from "./routes/character";
+import ComicsWith, {
+  loader as comicsWithLoader,
+  action as comicsWithAction,
+} from "./routes/comicsWith";
+import Characters, {
+  loader as charactersLoader,
+  action as charactersAction,
+} from "./routes/characters";
+import Character, {
+  loader as characterLoader,
+  action as characterAction,
+} from "./routes/character";
 import Signup, { action as signupAction } from "./routes/signup";
 import Login, { action as loginAction } from "./routes/login";
 import Logout from "./routes/logout";
@@ -38,11 +50,13 @@ function App() {
               path: "comics",
               element: <Comics />,
               loader: comicsLoader,
+              action: comicsAction,
             },
             {
               path: "comics/:characterId",
               element: <ComicsWith />,
               loader: comicsWithLoader,
+              action: comicsWithAction,
             },
             {
               path: "comic/:comicId",
@@ -54,11 +68,13 @@ function App() {
               path: "characters",
               element: <Characters />,
               loader: charactersLoader,
+              action: charactersAction,
             },
             {
-              path: "characters/:characterId",
+              path: "character/:characterId",
               element: <Character />,
               loader: characterLoader,
+              action: characterAction,
             },
           ],
         },

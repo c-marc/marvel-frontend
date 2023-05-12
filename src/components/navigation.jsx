@@ -22,7 +22,14 @@ export default function Navigation() {
       >
         Characters
       </NavLink>
-
+      <NavLink
+        to="/favorites"
+        className={({ isActive, isPending }) =>
+          isActive ? "active" : isPending ? "pending" : ""
+        }
+      >
+        Favorites
+      </NavLink>
       {user ? (
         <button onClick={handleLogout}>Log Out</button>
       ) : (
