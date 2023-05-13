@@ -5,9 +5,13 @@ const Favorite = ({ collection, item }) => {
   // Same as regular mutation but it's not a navigation--the URL doesn't change, the history stack is unaffected.
   const fetcher = useFetcher();
   const { user } = useAuth();
-  console.log("fav:", user.token);
 
   let favorite = item.favorite;
+  // If anonymous visitor, favorite is undefined
+  if (favorite === undefined) {
+    return <button disabled>NA</button>;
+  }
+
   // Optimistic UI
   // If it's being submitted, formData exists and we can anticipate
   if (fetcher.formData) {

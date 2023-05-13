@@ -3,7 +3,7 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Root from "./routes/root";
-import ErrorPage from "./error-page";
+import ErrorPage from "./components/error-page";
 import Index from "./routes";
 import Comics, {
   loader as comicsLoader,
@@ -25,6 +25,10 @@ import Character, {
   loader as characterLoader,
   action as characterAction,
 } from "./routes/character";
+import Favorites, {
+  loader as favoritesLoader,
+  action as favoritesAction,
+} from "./routes/favorites";
 import Signup, { action as signupAction } from "./routes/signup";
 import Login, { action as loginAction } from "./routes/login";
 import Logout from "./routes/logout";
@@ -44,44 +48,6 @@ function App() {
       children: [
         { index: true, element: <Index /> },
         {
-          // pathless protectect route
-          element: <ProtectedRoute />,
-          errorElement: <div>Oops! There was an error.</div>,
-          children: [
-            {
-              path: "comics",
-              element: <Comics />,
-              loader: comicsLoader(token),
-              action: comicsAction,
-            },
-            {
-              path: "comics/:characterId",
-              element: <ComicsWith />,
-              loader: comicsWithLoader(token),
-              action: comicsWithAction,
-            },
-            {
-              path: "comic/:comicId",
-              element: <Comic />,
-              loader: comicLoader(token),
-              action: comicAction,
-            },
-            {
-              path: "characters",
-              element: <Characters />,
-              loader: charactersLoader(token),
-              action: charactersAction,
-            },
-            {
-              path: "character/:characterId",
-              element: <Character />,
-              loader: characterLoader(token),
-              action: characterAction,
-            },
-          ],
-        },
-
-        {
           path: "signup",
           element: <Signup />,
           action: signupAction({ handleSignup }),
@@ -94,6 +60,49 @@ function App() {
         {
           path: "logout",
           element: <Logout />,
+        },
+        {
+          path: "comics",
+          element: <Comics />,
+          loader: comicsLoader(token),
+          action: comicsAction,
+        },
+        {
+          path: "comics/:characterId",
+          element: <ComicsWith />,
+          loader: comicsWithLoader(token),
+          action: comicsWithAction,
+        },
+        {
+          path: "comic/:comicId",
+          element: <Comic />,
+          loader: comicLoader(token),
+          action: comicAction,
+        },
+        {
+          path: "characters",
+          element: <Characters />,
+          loader: charactersLoader(token),
+          action: charactersAction,
+        },
+        {
+          path: "character/:characterId",
+          element: <Character />,
+          loader: characterLoader(token),
+          action: characterAction,
+        },
+        {
+          // pathless protectect route
+          element: <ProtectedRoute />,
+          errorElement: <div>Oops! There was an error.</div>,
+          children: [
+            {
+              path: "favorites",
+              element: <Favorites />,
+              loader: favoritesLoader(token),
+              action: favoritesAction,
+            },
+          ],
         },
       ],
     },
