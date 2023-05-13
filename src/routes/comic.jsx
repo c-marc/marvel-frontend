@@ -1,20 +1,26 @@
-import { Form, useFetcher, useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { getComic } from "../services/data";
 import Favorite from "../components/favorite";
-import { getFavoriteComics, updateFavoriteComics } from "../services/favorite";
+import { updateFavorite } from "../services/favorite";
 
-export async function loader({ params }) {
-  const comic = await getComic(params.comicId);
-  const favoriteComics = getFavoriteComics();
-  comic.favorite = favoriteComics.has(comic._id);
-  return { comic };
-}
+export const loader =
+  (token) =>
+  async ({ params }) => {
+    console.log("loader token", token);
+    const comic = await getComic(token, params.comicId);
+    console.log(comic);
+    return { comic };
+  };
 
-export async function action({ request, params }) {
+export async function action({ request }) {
   let formData = await request.formData();
-  return updateFavoriteComics(params.comicId, {
-    favorite: formData.get("favorite") === "true",
-  });
+  console.log("action", formData.get("token"));
+  return updateFavorite(
+    formData.get("token"),
+    formData.get("collection"),
+    formData.get("itemId"),
+    formData.get("favorite") === "true"
+  );
 }
 
 export default function Comic() {
@@ -25,7 +31,7 @@ export default function Comic() {
       <h1>
         {comic.title}
 
-        <Favorite item={comic} />
+        <Favorite collection="comics" item={comic} />
       </h1>
 
       <div>{comic.description}</div>

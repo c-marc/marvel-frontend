@@ -11,37 +11,40 @@ import {
 import Page from "../components/page";
 
 import { getCharacters } from "../services/data";
-import { getFavoriteCharacters } from "../services/favorite";
 import Favorite from "../components/favorite";
-import { updateFavoriteCharacters } from "../services/favorite";
+import { updateFavorite } from "../services/favorite";
 
-export async function loader({ request }) {
-  // Read current searchParams
-  const url = new URL(request.url);
-  const skip = Number(url.searchParams.get("skip")) || 0;
-  const limit = Number(url.searchParams.get("limit")) || 100;
-  const name = url.searchParams.get("name") || "";
+export const loader =
+  (token) =>
+  async ({ request }) => {
+    // Read current searchParams
+    const url = new URL(request.url);
+    const skip = Number(url.searchParams.get("skip")) || 0;
+    const limit = Number(url.searchParams.get("limit")) || 100;
+    const name = url.searchParams.get("name") || "";
 
-  // Fetch data
-  const characters = await getCharacters({ skip, limit, name });
+    // Fetch data
+    const characters = await getCharacters(token, { skip, limit, name });
 
-  // This is moving to backend
-  // Get favorites
-  // const favoriteCharacters = getFavoriteCharacters();
-  // Merge
-  // characters.results.forEach((character) => {
-  //   character.favorite = favoriteCharacters.has(character._id);
-  // });
+    // This is moving to backend
+    // Get favorites
+    // const favoriteCharacters = getFavoriteCharacters();
+    // Merge
+    // characters.results.forEach((character) => {
+    //   character.favorite = favoriteCharacters.has(character._id);
+    // });
 
-  return { characters, skip, limit, name };
-}
+    return { characters, skip, limit, name };
+  };
 
 export async function action({ request }) {
   let formData = await request.formData();
-  console.log(formData.get("itemId"));
-  return updateFavoriteCharacters(formData.get("itemId"), {
-    favorite: formData.get("favorite") === "true",
-  });
+  return updateFavorite(
+    formData.get("token"),
+    formData.get("collection"),
+    formData.get("itemId"),
+    formData.get("favorite") === "true"
+  );
 }
 
 export default function Characters() {
@@ -97,7 +100,7 @@ export default function Characters() {
           return (
             <div key={character._id}>
               <Link to={`/character/${character._id}`}>{character.name}</Link>
-              <Favorite item={character} />
+              <Favorite collection="characters" item={character} />
               <Link to={`/comics/${character._id}`}>
                 Comics she/he appears in
               </Link>

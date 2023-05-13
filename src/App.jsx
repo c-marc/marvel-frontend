@@ -32,7 +32,9 @@ import ProtectedRoute from "./routes/protectedRoute";
 import { useAuth } from "./components/authProvider";
 
 function App() {
-  const { handleSignup, handleLogin } = useAuth();
+  const { user, handleSignup, handleLogin } = useAuth();
+  const token = user?.token;
+  console.log(token);
 
   const router = createBrowserRouter([
     {
@@ -49,31 +51,31 @@ function App() {
             {
               path: "comics",
               element: <Comics />,
-              loader: comicsLoader,
+              loader: comicsLoader(token),
               action: comicsAction,
             },
             {
               path: "comics/:characterId",
               element: <ComicsWith />,
-              loader: comicsWithLoader,
+              loader: comicsWithLoader(token),
               action: comicsWithAction,
             },
             {
               path: "comic/:comicId",
               element: <Comic />,
-              loader: comicLoader,
+              loader: comicLoader(token),
               action: comicAction,
             },
             {
               path: "characters",
               element: <Characters />,
-              loader: charactersLoader,
+              loader: charactersLoader(token),
               action: charactersAction,
             },
             {
               path: "character/:characterId",
               element: <Character />,
-              loader: characterLoader,
+              loader: characterLoader(token),
               action: characterAction,
             },
           ],

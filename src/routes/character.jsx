@@ -1,25 +1,24 @@
-import { Form, useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
+import Favorite from "../components/favorite";
+
 import { getCharacter } from "../services/data";
-import {
-  getFavoriteCharacters,
-  updateFavoriteCharacters,
-} from "../services/favorite";
+import { updateFavorite } from "../services/favorite";
 
-export async function loader({ params }) {
-  const character = await getCharacter(params.characterId);
+export const loader =
+  (token) =>
+  async ({ params }) => {
+    const character = await getCharacter(token, params.characterId);
+    return { character };
+  };
 
-  // Add fav key to character
-  const favoriteCharacters = getFavoriteCharacters();
-  character.favorite = favoriteCharacters.has(character._id);
-
-  return { character };
-}
-
-export async function action({ request, params }) {
+export async function action({ request }) {
   let formData = await request.formData();
-  return updateFavoriteCharacters(params.characterId, {
-    favorite: formData.get("favorite") === "true",
-  });
+  return updateFavorite(
+    formData.get("token"),
+    formData.get("collection"),
+    formData.get("itemId"),
+    formData.get("favorite") === "true"
+  );
 }
 
 export default function Character() {
@@ -30,7 +29,7 @@ export default function Character() {
       <h1>
         {character.name}
 
-        <Favorite character={character} />
+        <Favorite collectionr="characters" item={character} />
       </h1>
 
       <div>{character.description}</div>
@@ -38,17 +37,17 @@ export default function Character() {
   );
 }
 
-const Favorite = ({ character }) => {
-  let favorite = character.favorite;
-  return (
-    <Form method="post">
-      <button
-        name="favorite"
-        value={favorite ? "false" : "true"}
-        aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
-      >
-        {favorite ? "★" : "☆"}
-      </button>
-    </Form>
-  );
-};
+// const Favorite = ({ character }) => {
+//   let favorite = character.favorite;
+//   return (
+//     <Form method="post">
+//       <button
+//         name="favorite"
+//         value={favorite ? "false" : "true"}
+//         aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
+//       >
+//         {favorite ? "★" : "☆"}
+//       </button>
+//     </Form>
+//   );
+// };

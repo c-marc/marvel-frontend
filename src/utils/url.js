@@ -37,3 +37,9 @@ export const createParams = (params) => {
   const safeParams = sanitizeParams(params);
   return new URLSearchParams(safeParams);
 };
+
+/** Create axios options from token */
+export const createOptions = (token) => {
+  if (!token) return {};
+  return { headers: { authorization: `Bearer ${token}` } };
+};

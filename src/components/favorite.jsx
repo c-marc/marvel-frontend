@@ -1,8 +1,11 @@
 import { useFetcher } from "react-router-dom";
+import { useAuth } from "./authProvider";
 
-const Favorite = ({ item }) => {
+const Favorite = ({ collection, item }) => {
   // Same as regular mutation but it's not a navigation--the URL doesn't change, the history stack is unaffected.
   const fetcher = useFetcher();
+  const { user } = useAuth();
+  console.log("fav:", user.token);
 
   let favorite = item.favorite;
   // Optimistic UI
@@ -20,6 +23,8 @@ const Favorite = ({ item }) => {
       >
         {favorite ? "★" : "☆"}
       </button>
+      <input hidden readOnly name="token" value={user.token} />
+      <input hidden readOnly name="collection" value={collection} />
       <input hidden readOnly name="itemId" value={item._id} />
     </fetcher.Form>
   );
