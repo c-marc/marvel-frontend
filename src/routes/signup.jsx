@@ -1,4 +1,4 @@
-import { Form, redirect, useNavigate, useLocation } from "react-router-dom";
+import { Form, redirect } from "react-router-dom";
 
 export const action =
   ({ handleSignup }) =>

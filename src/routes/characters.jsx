@@ -1,17 +1,14 @@
 import { useEffect } from "react";
 
-import {
-  Link,
-  useLoaderData,
-  useNavigation,
-  useSubmit,
-  Form,
-} from "react-router-dom";
+import { Link, useLoaderData, useNavigation } from "react-router-dom";
 
+import Count from "../components/count";
 import Page from "../components/page";
+import Limit from "../components/limit";
+import Search from "../components/search";
+import Favorite from "../components/favorite";
 
 import { getCharacters } from "../services/data";
-import Favorite from "../components/favorite";
 import { updateFavorite } from "../services/favorite";
 
 export const loader =
@@ -25,14 +22,6 @@ export const loader =
 
     // Fetch data
     const characters = await getCharacters(token, { skip, limit, name });
-
-    // This is moving to backend
-    // Get favorites
-    // const favoriteCharacters = getFavoriteCharacters();
-    // Merge
-    // characters.results.forEach((character) => {
-    //   character.favorite = favoriteCharacters.has(character._id);
-    // });
 
     return { characters, skip, limit, name };
   };
@@ -50,8 +39,8 @@ export async function action({ request }) {
 export default function Characters() {
   const { characters, skip, limit, name } = useLoaderData();
   const navigation = useNavigation();
-  const submit = useSubmit();
 
+  // Watch for ongoing change to display spinner
   const searching =
     navigation.location &&
     new URLSearchParams(navigation.location.search).has("name");
@@ -65,37 +54,18 @@ export default function Characters() {
     <>
       <h1>Characters</h1>
 
-      <Form id="search-form" role="search">
-        <input
-          id="name"
-          className={searching ? "loading" : ""}
-          aria-label="Search characters"
-          placeholder="Search"
-          type="search"
-          name="name"
-          defaultValue={name}
-          onChange={(event) => {
-            // replace the current entry in the history stack with the next page
-            const isFirstSearch = name == null;
-            submit(event.currentTarget.form, {
-              replace: !isFirstSearch,
-            });
-          }}
-        />
-        <div id="search-spinner" aria-hidden hidden={true} />
-        <div className="sr-only" aria-live="polite"></div>
-      </Form>
+      <Search params={{ limit, name }} searching={searching} />
 
       <div
         id="detail"
         className={navigation.state === "loading" ? "loading" : ""}
       >
-        <p>{characters.count} results</p>
-        <Page
-          route="/characters"
-          count={characters.count}
-          params={{ skip, limit, name }}
-        />
+        <Count count={characters.count} />
+
+        <Limit params={{ skip, limit, name }} />
+
+        <Page count={characters.count} params={{ skip, limit, name }} />
+
         {characters.results.map((character) => {
           return (
             <div key={character._id}>

@@ -3,6 +3,7 @@ import { Link, useLoaderData, useNavigation } from "react-router-dom";
 import { getComics, getCharacters } from "../services/data";
 import Favorite from "../components/favorite";
 import { updateFavorite } from "../services/favorite";
+import Count from "../components/count";
 
 export const loader = (token) => async () => {
   // Fetch data
@@ -43,7 +44,8 @@ export default function Favorites() {
         className={navigation.state === "loading" ? "loading" : ""}
       >
         <section id="comics">
-          <p>{comics.count} results</p>
+          <Count count={comics.count} />
+
           {comics.results.map((comic) => {
             return (
               <div key={comic._id}>
@@ -55,7 +57,8 @@ export default function Favorites() {
         </section>
 
         <section id="characters">
-          <p>{characters.count} results</p>
+          <Count count={characters.count} />
+
           {characters.results.map((character) => {
             return (
               <div key={character._id}>

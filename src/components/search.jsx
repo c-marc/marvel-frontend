@@ -10,9 +10,6 @@ const Search = ({ params, searching }) => {
   const label = title !== undefined ? "title" : "name";
   const value = title !== undefined ? title : name;
 
-  console.log("title", title);
-  console.log(label);
-
   return (
     <Form id="search-form" role="search">
       <input
@@ -33,10 +30,11 @@ const Search = ({ params, searching }) => {
       />
 
       {/* submit limit but let skip go to default */}
-      <input name="limit" value={limit} aria-hidden hidden={true} />
+      <input name="limit" value={limit} readOnly aria-hidden hidden />
 
       {/* pattern from doc: use it */}
-      <div id="search-spinner" aria-hidden hidden={true} />
+      <div id="search-spinner" aria-hidden hidden={!searching} />
+      {/* inform the sr to wait for the user to be inactive again */}
       <div className="sr-only" aria-live="polite"></div>
     </Form>
   );

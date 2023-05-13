@@ -1,19 +1,23 @@
-import { useNavigate } from "react-router-dom";
-import { createParams, getPage, getPageMax, getSkip } from "../utils/url";
+import { useSubmit } from "react-router-dom";
+import { getPage, getPageMax, getSkip } from "../utils/url";
 
-const Page = ({ route, count, params }) => {
-  const navigate = useNavigate();
+const Page = ({ count, params }) => {
+  const submit = useSubmit();
 
-  const { skip, limit } = params;
+  const { skip, limit, title, name } = params;
   const page = getPage(skip, limit);
   const pageMax = getPageMax(count, limit);
 
   const handlePageChange = (newPage) => {
     const newSkip = getSkip(newPage, limit);
-    const newParams = createParams({ ...params, skip: newSkip });
-    const newTo = `${route}?${newParams}`;
-    console.log("Navigate to", newTo);
-    navigate(newTo);
+
+    // Submit to current route
+    let formData = new FormData();
+    formData.append("skip", newSkip);
+    formData.append("limit", limit);
+    title && formData.append("title", title);
+    name && formData.append("name", name);
+    submit(formData);
   };
 
   return (
