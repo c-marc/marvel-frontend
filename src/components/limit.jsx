@@ -11,7 +11,7 @@ const Limit = ({ params }) => {
         id="limit"
         defaultValue={limit}
         onChange={(event) => {
-          submit(event.currentTarget.form);
+          submit(event.currentTarget.form, { replace: true });
         }}
       >
         <option value="10">10</option>

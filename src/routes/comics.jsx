@@ -14,6 +14,7 @@ import { updateFavorite } from "../services/favorite";
 import Page from "../components/page";
 import Count from "../components/count";
 import Limit from "../components/limit";
+import Search from "../components/search";
 
 export const loader =
   (token) =>
@@ -51,6 +52,7 @@ export async function action({ request }) {
 
 export default function Comics() {
   const { comics, skip, limit, title } = useLoaderData();
+  console.log("comics", title);
   const navigation = useNavigation();
   const submit = useSubmit();
 
@@ -68,7 +70,7 @@ export default function Comics() {
     <>
       <h1>Comics</h1>
 
-      <Form id="search-form" role="search">
+      {/* <Form id="search-form" role="search">
         <input
           id="title"
           className={searching ? "loading" : ""}
@@ -79,17 +81,19 @@ export default function Comics() {
           defaultValue={title}
           onChange={(event) => {
             // replace the current entry in the history stack with the next page
-            const isFirstSearch = title == null;
+            const isFirstSearch = title === "";
             submit(event.currentTarget.form, {
               replace: !isFirstSearch,
             });
           }}
         />
         <input name="limit" value={limit} aria-hidden hidden={true} />
-        {/* pattern from doc: use it */}
+        
         <div id="search-spinner" aria-hidden hidden={true} />
         <div className="sr-only" aria-live="polite"></div>
-      </Form>
+      </Form> */}
+
+      <Search params={{ limit, title }} searching={searching} />
 
       <div
         id="detail"
