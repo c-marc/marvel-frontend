@@ -29,7 +29,7 @@ export default function Character() {
       <h1>
         {character.name}
 
-        <Favorite collectionr="characters" item={character} />
+        <Favorite collection="characters" item={character} />
       </h1>
 
       <div>{character.description}</div>

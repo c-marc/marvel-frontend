@@ -44,6 +44,7 @@ export default function Favorites() {
         className={navigation.state === "loading" ? "loading" : ""}
       >
         <section id="comics">
+          <h2>Your favorite comics</h2>
           <Count count={comics.count} />
 
           {comics.results.map((comic) => {
@@ -57,6 +58,7 @@ export default function Favorites() {
         </section>
 
         <section id="characters">
+          <h2>Your favorite characters</h2>
           <Count count={characters.count} />
 
           {characters.results.map((character) => {

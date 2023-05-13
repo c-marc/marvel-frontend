@@ -1,15 +1,16 @@
 import { Outlet } from "react-router-dom";
 
 import Header from "../components/header";
+import Footer from "../components/footer";
 
 const Root = () => {
   return (
     <>
       <Header />
 
-      <h1>Root page</h1>
-
       <Outlet />
+
+      <Footer author="Marc" location="Le Réacteur" year="2023" />
     </>
   );
 };

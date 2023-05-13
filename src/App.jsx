@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Root from "./routes/root";
 import ErrorPage from "./components/error-page";
-import Index from "./routes";
+import LandingPage from "./components/landing-page";
 import Comics, {
   loader as comicsLoader,
   action as comicsAction,
@@ -46,7 +46,7 @@ function App() {
       element: <Root />,
       errorElement: <ErrorPage />,
       children: [
-        { index: true, element: <Index /> },
+        { index: true, element: <LandingPage /> },
         {
           path: "signup",
           element: <Signup />,

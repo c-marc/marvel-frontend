@@ -30,9 +30,9 @@ export default function Login() {
         <label>
           <span>Password</span>
           <input
-            placeholder="password"
             type="password"
             name="password"
+            placeholder="password"
             required
           />
         </label>

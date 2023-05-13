@@ -3,3 +3,16 @@
 ::after {
   box-sizing: border-box;
 }
+
+.icon {
+  height: 1em;
+  vertical-align: bottom;
+}
+
+.username {
+  text-transform: capitalize;
+}
+
+.bold {
+  font-weight: bold;
+}

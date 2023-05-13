@@ -7,14 +7,21 @@ export default function Logout() {
 
   return (
     <p>
-      <button onClick={handleLogout}>Yes, I'm sure</button>
+      <button
+        onClick={() => {
+          handleLogout();
+          navigate("/");
+        }}
+      >
+        Yes, I'm sure
+      </button>
       <button
         type="button"
         onClick={() => {
           navigate(-1);
         }}
       >
-        Cancel
+        No, I'm an addict to Compound V...
       </button>
     </p>
   );

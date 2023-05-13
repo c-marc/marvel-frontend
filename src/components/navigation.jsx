@@ -2,8 +2,8 @@ import { NavLink, Link } from "react-router-dom";
 import { useAuth } from "./authProvider";
 
 export default function Navigation() {
-  const { user, handleLogout } = useAuth();
-  // ou tester la route logout qui expérimente react router
+  const { user } = useAuth();
+
   return (
     <nav>
       <NavLink
@@ -31,7 +31,7 @@ export default function Navigation() {
         Favorites
       </NavLink>
       {user ? (
-        <button onClick={handleLogout}>Log Out</button>
+        <Link to="/logout">Log Out</Link>
       ) : (
         <div>
           <Link to="/signup">Sign Up</Link>

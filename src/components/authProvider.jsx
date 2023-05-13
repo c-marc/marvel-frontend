@@ -43,7 +43,7 @@ const AuthProvider = ({ children }) => {
   const handleLogout = () => {
     console.log("Logout");
     setUser(null);
-    Cookies.remove("marveToken");
+    Cookies.remove("marvelToken");
   };
 
   const value = {
