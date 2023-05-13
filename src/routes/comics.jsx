@@ -12,6 +12,8 @@ import Favorite from "../components/favorite";
 import { getComics } from "../services/data";
 import { updateFavorite } from "../services/favorite";
 import Page from "../components/page";
+import Count from "../components/count";
+import Limit from "../components/limit";
 
 export const loader =
   (token) =>
@@ -58,8 +60,9 @@ export default function Comics() {
 
   // Solve the go back nav because we don't control the url
   useEffect(() => {
+    document.getElementById("limit").value = limit;
     document.getElementById("title").value = title;
-  }, [title]);
+  }, [limit, title]);
 
   return (
     <>
@@ -82,6 +85,8 @@ export default function Comics() {
             });
           }}
         />
+        <input name="limit" value={limit} aria-hidden hidden={true} />
+        {/* pattern from doc: use it */}
         <div id="search-spinner" aria-hidden hidden={true} />
         <div className="sr-only" aria-live="polite"></div>
       </Form>
@@ -91,6 +96,9 @@ export default function Comics() {
         className={navigation.state === "loading" ? "loading" : ""}
       >
         <p>{comics.count} results</p>
+        <Count count={comics.count} />
+        <Limit params={{ skip, limit, title }} />
+
         <Page
           route="/comics"
           count={comics.count}
