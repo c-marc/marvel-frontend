@@ -1,6 +1,8 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, Link, useNavigation } from "react-router-dom";
 import Favorite from "../components/favorite";
+import Loading from "../components/loading";
 
+import { getImgUrl } from "../utils/images";
 import { getCharacter } from "../services/data";
 import { updateFavorite } from "../services/favorite";
 
@@ -23,16 +25,35 @@ export async function action({ request }) {
 
 export default function Character() {
   const { character } = useLoaderData();
+  const navigation = useNavigation();
+
+  const imgUrl = getImgUrl(character.thumbnail, {
+    format: "standard",
+    size: "xlarge",
+  });
 
   return (
-    <div id="character">
-      <h1>
-        {character.name}
+    <>
+      {navigation.state === "loading" ? (
+        <Loading message="Fetching character..." />
+      ) : (
+        <div className="result">
+          <div className="title">
+            <Favorite collection="characters" item={character} />
+            <div>
+              <h1>{character.name}</h1>
+              <Link className="related" to={`/comics/${character._id}`}>
+                Comics she/he/it appears in
+              </Link>
+            </div>
+          </div>
 
-        <Favorite collection="characters" item={character} />
-      </h1>
-
-      <div>{character.description}</div>
-    </div>
+          <div className="columns">
+            <img src={imgUrl} alt={character.name} />
+            <div className="description">{character.description}</div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

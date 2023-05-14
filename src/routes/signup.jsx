@@ -13,7 +13,7 @@ export const action =
 
 export default function Signup() {
   return (
-    <>
+    <div className="auth-form">
       <h1>Sign Up</h1>
 
       <Form method="post">
@@ -47,8 +47,10 @@ export default function Signup() {
           />
         </label>
 
-        <button type="submit">Sign up</button>
+        <button className="btn btn-primary" type="submit">
+          Sign up
+        </button>
       </Form>
-    </>
+    </div>
   );
 }

@@ -9,7 +9,7 @@ const Favorite = ({ collection, item }) => {
   let favorite = item.favorite;
   // If anonymous visitor, favorite is undefined
   if (favorite === undefined) {
-    return <button disabled>NA</button>;
+    return null;
   }
 
   // Optimistic UI

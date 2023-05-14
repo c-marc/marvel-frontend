@@ -6,8 +6,9 @@ export default function Logout() {
   const navigate = useNavigate();
 
   return (
-    <p>
+    <div id="logout">
       <button
+        className="btn btn-primary"
         onClick={() => {
           handleLogout();
           navigate("/");
@@ -16,6 +17,7 @@ export default function Logout() {
         Yes, I'm sure
       </button>
       <button
+        className="btn"
         type="button"
         onClick={() => {
           navigate(-1);
@@ -23,6 +25,6 @@ export default function Logout() {
       >
         No, I'm an addict to Compound V...
       </button>
-    </p>
+    </div>
   );
 }

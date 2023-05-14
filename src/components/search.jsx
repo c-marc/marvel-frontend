@@ -1,4 +1,5 @@
 import { Form, useSubmit } from "react-router-dom";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 const Search = ({ params, searching }) => {
   const submit = useSubmit();
@@ -12,6 +13,10 @@ const Search = ({ params, searching }) => {
 
   return (
     <Form id="search-form" role="search">
+      <div className="icon-container">
+        <MagnifyingGlassIcon className="icon" />
+      </div>
+
       <input
         id={label}
         className={searching ? "loading" : ""}

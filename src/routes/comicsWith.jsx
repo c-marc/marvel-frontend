@@ -1,8 +1,9 @@
-import { Link, useLoaderData, useNavigation } from "react-router-dom";
+import { useLoaderData, useNavigation } from "react-router-dom";
 
-import Favorite from "../components/favorite";
+import Card from "../components/card";
+import Loading from "../components/loading";
 
-import { getCharacter, getComicsWith } from "../services/data";
+import { getComicsWith } from "../services/data";
 import { updateFavorite } from "../services/favorite";
 
 export const loader =
@@ -32,20 +33,27 @@ export default function ComicsWith() {
   return (
     <>
       <h1>Comics with {character.name}</h1>
-      <Favorite collection="characters" item={character} />
-      <div
-        id="detail"
-        className={navigation.state === "loading" ? "loading" : ""}
-      >
-        {character.comics.map((comic) => {
-          return (
-            <div key={comic._id}>
-              <Link to={`/comic/${comic._id}`}>{comic.title}</Link>
-              <Favorite collection="comics" item={comic} />
-            </div>
-          );
-        })}
-      </div>
+
+      {navigation.state === "loading" ? (
+        <Loading message="Fetching comics..." />
+      ) : (
+        <div
+          className={
+            navigation.state === "loading" ? "loading results" : "results"
+          }
+        >
+          {character.comics.map((comic) => {
+            return (
+              // <div key={comic._id}>
+              //   <Link to={`/comic/${comic._id}`}>{comic.title}</Link>
+              //   <Favorite collection="comics" item={comic} />
+              // </div>
+
+              <Card key={comic._id} collection="comics" item={comic} />
+            );
+          })}
+        </div>
+      )}
     </>
   );
 }

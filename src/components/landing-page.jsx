@@ -13,10 +13,12 @@ export default function LandingPage() {
             <span className="bold username">{user.account.username}</span>!
           </h1>
           <p>
-            Jump to your <Link to="/favorites">Favs'</Link>.
+            Did you miss us? Or are you in an urgent need of checking{" "}
+            <Link to="/favorites">your favorites</Link>?
           </p>
           <p>
-            Or explore <Link to="/comics">all comics</Link>.
+            Otherwise, have fun exploring{" "}
+            <Link to="/comics">more Marvel's comics</Link>.
           </p>
         </>
       ) : (

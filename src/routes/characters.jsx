@@ -6,7 +6,8 @@ import Count from "../components/count";
 import Page from "../components/page";
 import Limit from "../components/limit";
 import Search from "../components/search";
-import Favorite from "../components/favorite";
+import Loading from "../components/loading";
+import Card from "../components/card";
 
 import { getCharacters } from "../services/data";
 import { updateFavorite } from "../services/favorite";
@@ -56,28 +57,44 @@ export default function Characters() {
 
       <Search params={{ limit, name }} searching={searching} />
 
-      <div
-        id="detail"
-        className={navigation.state === "loading" ? "loading" : ""}
-      >
+      <section className="controls">
         <Count count={characters.count} />
 
-        <Limit params={{ skip, limit, name }} />
+        <p>
+          <span>Show</span>
+          <Limit params={{ skip, limit, name }} />
+          <span>per page</span>
+        </p>
 
         <Page count={characters.count} params={{ skip, limit, name }} />
+      </section>
 
-        {characters.results.map((character) => {
-          return (
-            <div key={character._id}>
-              <Link to={`/character/${character._id}`}>{character.name}</Link>
-              <Favorite collection="characters" item={character} />
-              <Link to={`/comics/${character._id}`}>
-                Comics she/he appears in
-              </Link>
-            </div>
-          );
-        })}
-      </div>
+      {navigation.state === "loading" ? (
+        <Loading message="Fetching characters..." />
+      ) : (
+        <div
+          className={
+            navigation.state === "loading" ? "loading results" : "results"
+          }
+        >
+          {characters.results.map((character) => {
+            return (
+              // <div key={character._id}>
+              //   <Link to={`/character/${character._id}`}>{character.name}</Link>
+              //   <Favorite collection="characters" item={character} />
+              //   <Link to={`/comics/${character._id}`}>
+              //     Comics she/he appears in
+              //   </Link>
+              // </div>
+              <Card
+                key={character._id}
+                collection="characters"
+                item={character}
+              />
+            );
+          })}
+        </div>
+      )}
     </>
   );
 }

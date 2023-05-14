@@ -9,6 +9,8 @@ import Page from "../components/page";
 import Count from "../components/count";
 import Limit from "../components/limit";
 import Search from "../components/search";
+import Loading from "../components/loading";
+import Card from "../components/card";
 
 export const loader =
   (token) =>
@@ -56,25 +58,38 @@ export default function Comics() {
 
       <Search params={{ limit, title }} searching={searching} />
 
-      <div
-        id="detail"
-        className={navigation.state === "loading" ? "loading" : ""}
-      >
+      <section className="controls">
         <Count count={comics.count} />
 
-        <Limit params={{ skip, limit, title }} />
+        <p>
+          <span>Show</span>
+          <Limit params={{ skip, limit, title }} />
+          <span>per page</span>
+        </p>
 
         <Page count={comics.count} params={{ skip, limit, title }} />
+      </section>
 
-        {comics.results.map((comic) => {
-          return (
-            <div key={comic._id}>
-              <Link to={`/comic/${comic._id}`}>{comic.title}</Link>
-              <Favorite collection="comics" item={comic} />
-            </div>
-          );
-        })}
-      </div>
+      {navigation.state === "loading" ? (
+        <Loading message="Fetching comics..." />
+      ) : (
+        <div
+          className={
+            navigation.state === "loading" ? "loading results" : "results"
+          }
+        >
+          {comics.results.map((comic) => {
+            return (
+              // <div key={comic._id}>
+              //   <Link to={`/comic/${comic._id}`}>{comic.title}</Link>
+              //   <Favorite collection="comics" item={comic} />
+              // </div>
+
+              <Card key={comic._id} collection="comics" item={comic} />
+            );
+          })}
+        </div>
+      )}
     </>
   );
 }

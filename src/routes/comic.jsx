@@ -1,8 +1,9 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigation } from "react-router-dom";
 import { getComic } from "../services/data";
 import Favorite from "../components/favorite";
 import { updateFavorite } from "../services/favorite";
-import Card from "../components/card";
+import { getImgUrl } from "../utils/images";
+import Loading from "../components/loading";
 
 export const loader =
   (token) =>
@@ -26,18 +27,31 @@ export async function action({ request }) {
 
 export default function Comic() {
   const { comic } = useLoaderData();
+  const navigation = useNavigation();
+
+  const imgUrl = getImgUrl(comic.thumbnail, {
+    format: "standard",
+    size: "xlarge",
+  });
 
   return (
-    <div id="comic">
-      <h1>
-        {comic.title}
+    <>
+      {navigation.state === "loading" ? (
+        <Loading message="Fetching comic..." />
+      ) : (
+        <div className="result">
+          <div className="title">
+            <Favorite collection="comics" item={comic} />
+            <h1>{comic.title}</h1>
+          </div>
 
-        <Favorite collection="comics" item={comic} />
-      </h1>
-      <div>{comic.description}</div>
-      Test:
-      <Card collection="comics" item={comic}></Card>
-    </div>
+          <div className="columns">
+            <img src={imgUrl} alt={comic.title} />
+            <div className="description">{comic.description}</div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

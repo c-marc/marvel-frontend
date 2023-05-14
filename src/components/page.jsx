@@ -42,9 +42,7 @@ const Page = ({ count, params }) => {
           <ChevronLeftIcon className="icon" />
         </button>
       </div>
-
-      {page}
-
+      <p>{page}</p>
       <div className={isPageMax ? "isHidden" : ""}>
         <button
           disabled={isPageMax}
