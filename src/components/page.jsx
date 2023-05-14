@@ -1,9 +1,12 @@
 import { useSubmit } from "react-router-dom";
 import { getPage, getPageMax, getSkip } from "../utils/url";
 
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+
 const Page = ({ count, params }) => {
   const submit = useSubmit();
 
+  // try to useLoaderData for that pattern
   const { skip, limit, title, name } = params;
   const page = getPage(skip, limit);
   const pageMax = getPageMax(count, limit);
@@ -11,7 +14,7 @@ const Page = ({ count, params }) => {
   const handlePageChange = (newPage) => {
     const newSkip = getSkip(newPage, limit);
 
-    // Submit to current route
+    // Submit to current route (as GET)
     let formData = new FormData();
     formData.append("skip", newSkip);
     formData.append("limit", limit);
@@ -20,21 +23,40 @@ const Page = ({ count, params }) => {
     submit(formData);
   };
 
+  // shorteners
+  // out of bounds values shouldnt happen but let's be safe
+  const isPageOne = page <= 1;
+  const isPageMax = page >= pageMax;
+
   return (
     <div className="page">
-      {page > 1 && (
-        <>
-          <button onClick={() => handlePageChange(1)}>1</button>
-          <button onClick={() => handlePageChange(page - 1)}>prev</button>
-        </>
-      )}
+      <div className={isPageOne ? "isHidden" : ""}>
+        <button disabled={isPageOne} onClick={() => handlePageChange(1)}>
+          1
+        </button>
+        <button
+          disabled={isPageOne}
+          onClick={() => handlePageChange(page - 1)}
+          aria-label="previous page"
+        >
+          <ChevronLeftIcon className="icon" />
+        </button>
+      </div>
+
       {page}
-      {page < pageMax && (
-        <>
-          <button onClick={() => handlePageChange(page + 1)}>next</button>
-          <button onClick={() => handlePageChange(pageMax)}>{pageMax}</button>
-        </>
-      )}
+
+      <div className={isPageMax ? "isHidden" : ""}>
+        <button
+          disabled={isPageMax}
+          onClick={() => handlePageChange(page + 1)}
+          aria-label="next-page"
+        >
+          <ChevronRightIcon className="icon" />
+        </button>
+        <button disabled={isPageMax} onClick={() => handlePageChange(pageMax)}>
+          {pageMax}
+        </button>
+      </div>
     </div>
   );
 };

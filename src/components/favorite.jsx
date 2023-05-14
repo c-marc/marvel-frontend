@@ -19,7 +19,7 @@ const Favorite = ({ collection, item }) => {
   }
 
   return (
-    <fetcher.Form method="post">
+    <fetcher.Form method="post" className="favorite-form">
       <button
         name="favorite"
         value={favorite ? "false" : "true"}

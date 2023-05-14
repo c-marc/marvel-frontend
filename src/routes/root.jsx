@@ -5,13 +5,15 @@ import Footer from "../components/footer";
 
 const Root = () => {
   return (
-    <>
+    <div id="root-component">
       <Header />
 
-      <Outlet />
+      <main>
+        <Outlet />
+      </main>
 
       <Footer author="Marc" location="Le Réacteur" year="2023" />
-    </>
+    </div>
   );
 };
 

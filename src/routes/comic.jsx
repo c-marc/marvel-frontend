@@ -2,6 +2,7 @@ import { useLoaderData } from "react-router-dom";
 import { getComic } from "../services/data";
 import Favorite from "../components/favorite";
 import { updateFavorite } from "../services/favorite";
+import Card from "../components/card";
 
 export const loader =
   (token) =>
@@ -33,8 +34,9 @@ export default function Comic() {
 
         <Favorite collection="comics" item={comic} />
       </h1>
-
       <div>{comic.description}</div>
+      Test:
+      <Card collection="comics" item={comic}></Card>
     </div>
   );
 }
