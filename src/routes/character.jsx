@@ -29,7 +29,7 @@ export default function Character() {
 
   const imgUrl = getImgUrl(character.thumbnail, {
     format: "standard",
-    size: "xlarge",
+    size: "fantastic",
   });
 
   return (

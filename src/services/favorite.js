@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createOptions } from "../utils/url";
 
-const API_URL = "http://localhost:3000";
+import { API_URL } from "./config";
 
 // Fetch multiple comics
 export async function updateFavorite(token, collection, id, value) {
